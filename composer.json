@@ -1,0 +1,39 @@
+{
+  "name": "sunnysideup/collect-elemental-content",
+  "type": "silverstripe-vendormodule",
+  "description": "Collect all the content from the elemental blocks for easy searching.",
+  "keywords": [
+    "Silverstripe-CMS",
+    "CMS",
+    "Silverstripe",
+    "link",
+    "elemental",
+    "blocks",
+    "search",
+    "content",
+    "fulltext",
+    "full-text",
+    "mysql"
+  ],
+  "require": {
+    "silverstripe/framework": "^4.0",
+    "silverstripe/elemental": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Nicolaas Francken",
+      "email": "modules@sunnysideup.co.nz",
+      "role": "lead developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Sunnysideup\\CollectElementalContent\\": "src/"
+    }
+  },
+  "suggested": {
+  }
+}
