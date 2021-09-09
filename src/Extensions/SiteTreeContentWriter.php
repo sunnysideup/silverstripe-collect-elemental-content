@@ -38,12 +38,12 @@ class SiteTreeContentWriter extends SiteTreeExtension
         'Date',
     ];
 
-    protected function onBeforeWrite()
+    public function onBeforeWrite()
     {
         $this->getOwner()->updateSearchContent();
     }
 
-    protected function updateSearchContent()
+    public function updateSearchContent()
     {
         //populate search
         $myContent = '';
@@ -63,7 +63,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
         }
     }
 
-    protected function extractData($object): string
+    public function extractData($object): string
     {
         $badTypes = $this->getOwner()->getUnsearchableTypes(); ;
         $unsetFields = $this->getOwner()->getUnsearchableFields();
@@ -118,7 +118,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
         return $string;
     }
 
-    protected function getUnsearchableFields() : array
+    public function getUnsearchableFields() : array
     {
         $array = self::BASE_UNSEARCHABLE_FIELDS;
         if($this->getOwner()->getOwner()->hasMethod('getUnsearchableFieldsExtras')) {
@@ -132,7 +132,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
         return $array;
     }
 
-    protected function getUnsearchableTypes() : array
+    public function getUnsearchableTypes() : array
     {
         $array = self::BASE_UNSEARCHABLE_TYPES;
         if($this->getOwner()->getOwner()->hasMethod('getUnsearchableTypesExtras')) {
