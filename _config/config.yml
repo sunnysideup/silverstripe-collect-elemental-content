@@ -1,3 +1,6 @@
 ---
 Name: collect-elemental-content
 ---
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - Sunnysideup\CollectElementalContent\Extensions\SiteTreeContentWriter
