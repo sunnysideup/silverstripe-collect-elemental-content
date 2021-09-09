@@ -40,33 +40,37 @@ class SiteTreeContentWriter extends SiteTreeExtension
 
     public function onBeforeWrite()
     {
-        $this->getOwner()->updateSearchContent();
+        $this->updateSearchContentFromElementals();
     }
 
-    public function updateSearchContent()
+    public function updateSearchContentFromElementals()
     {
         //populate search
+        $owner = $this->getOwner();
         $myContent = '';
-        $myContent .= $this->getOwner()->extractData($this);
-        $myElementalArea = $this->getOwner()->ElementalArea();
+        $myContent .= $owner->updateSearchContentFromElementalsExtractData($owner);
+        $myElementalArea = $owner->ElementalArea();
         $ids = [];
         if ($myElementalArea && $myElementalArea instanceof ElementalArea) {
             $elements = $myElementalArea->Elements();
             foreach ($elements as $element) {
-                $myContent .= $this->getOwner()->extractData($element);
+                $myContent .= $owner->updateSearchContentFromElementalsExtractData($element);
                 $ids[$element->ID] = $element->Title;
             }
         }
-        $this->getOwner()->Content = $myContent . '. ';
+        $this->owner->Content = $myContent . '. ';
+
+        //for anchor links only!
         foreach($ids as $id => $title) {
-            $this->getOwner()->Content .= '<br /><a id="e'.$id.'">'.$title.'</a>';
+            $this->owner->Content .= '<br /><a id="e'.$id.'">'.$title.'</a>';
         }
     }
 
-    public function extractData($object): string
+    public function updateSearchContentFromElementalsExtractData($object): string
     {
-        $badTypes = $this->getOwner()->getUnsearchableTypes(); ;
-        $unsetFields = $this->getOwner()->getUnsearchableFields();
+        $owner = $this->getOwner();
+        $badTypes = $owner->getUnsearchableTypes();
+        $unsetFields = $owner->getUnsearchableFields();
         $string = '';
         foreach (['db', 'has_one', 'belongs', 'has_many', 'many_many', 'belongs_many_many'] as $relType) {
             $fields = Config::inst()->get($object->ClassName, $relType);
@@ -120,9 +124,10 @@ class SiteTreeContentWriter extends SiteTreeExtension
 
     public function getUnsearchableFields() : array
     {
+        $owner = $this->getOwner();
         $array = self::BASE_UNSEARCHABLE_FIELDS;
-        if($this->getOwner()->getOwner()->hasMethod('getUnsearchableFieldsExtras')) {
-            $extraArray = $this->getOwner()->getOwner()->getUnsearchableFieldsExtras();
+        if($owner->hasMethod('getUnsearchableFieldsExtras')) {
+            $extraArray = $owner->getUnsearchableFieldsExtras();
         } else {
             $extraArray = Config::inst()->get(Page::class, 'unsearchable_fields_extra');
         }
@@ -134,9 +139,10 @@ class SiteTreeContentWriter extends SiteTreeExtension
 
     public function getUnsearchableTypes() : array
     {
+        $owner = $this->getOwner();
         $array = self::BASE_UNSEARCHABLE_TYPES;
-        if($this->getOwner()->getOwner()->hasMethod('getUnsearchableTypesExtras')) {
-            $extraArray = $this->getOwner()->getOwner()->getUnsearchableTypesExtras();
+        if($owner->hasMethod('getUnsearchableTypesExtras')) {
+            $extraArray = $owner->getUnsearchableTypesExtras();
         } else {
             $extraArray = Config::inst()->get(Page::class, 'unsearchable_types_extra');
         }
