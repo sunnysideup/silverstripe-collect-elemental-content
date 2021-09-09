@@ -24,9 +24,12 @@ class SiteTreeContentWriter extends SiteTreeExtension
         'ElementalArea',
         'SortBy',
         'FileTracking',
+        'LinkTracking',
+        'ExtraClass',
         'Sort',
         'Version',
     ];
+
     private const BASE_UNSEARCHABLE_TYPES = [
         'Boolean',
         'Boolean(0)',
