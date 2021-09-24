@@ -49,20 +49,22 @@ class SiteTreeContentWriter extends SiteTreeExtension
         $owner = $this->getOwner();
         $myContent = '';
         $myContent .= $owner->updateSearchContentFromElementalsExtractData($owner);
-        $myElementalArea = $owner->ElementalArea();
-        $ids = [];
-        if ($myElementalArea && $myElementalArea instanceof ElementalArea) {
-            $elements = $myElementalArea->Elements();
-            foreach ($elements as $element) {
-                $myContent .= $owner->updateSearchContentFromElementalsExtractData($element);
-                $ids[$element->ID] = $element->Title;
+        if($owner && $owner->hasMethod('ElementalArea')) {
+            $myElementalArea = $owner->ElementalArea();
+            $ids = [];
+            if ($myElementalArea && $myElementalArea instanceof ElementalArea) {
+                $elements = $myElementalArea->Elements();
+                foreach ($elements as $element) {
+                    $myContent .= $owner->updateSearchContentFromElementalsExtractData($element);
+                    $ids[$element->ID] = $element->Title;
+                }
             }
-        }
-        $this->owner->Content = $myContent . '. ';
+            $this->owner->Content = $myContent . '. ';
 
-        //for anchor links only!
-        foreach($ids as $id => $title) {
-            $this->owner->Content .= '<br /><a id="e'.$id.'">'.$title.'</a>';
+            //for anchor links only!
+            foreach($ids as $id => $title) {
+                $this->owner->Content .= '<br /><a id="e'.$id.'">'.$title.'</a>';
+            }
         }
     }
 
