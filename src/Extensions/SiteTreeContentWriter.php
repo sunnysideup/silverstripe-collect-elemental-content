@@ -2,15 +2,13 @@
 
 namespace Sunnysideup\CollectElementalContent\Extensions;
 
-use SilverStripe\CMS\Model\SiteTreeExtension;
-
-use SilverStripe\Core\Config\Config;
-
 use DNADesign\Elemental\Models\ElementalArea;
+use SilverStripe\CMS\Model\SiteTreeExtension;
+use SilverStripe\Core\Config\Config;
+use Page;
 
 class SiteTreeContentWriter extends SiteTreeExtension
 {
-
     private const BASE_UNSEARCHABLE_FIELDS = [
         'Content',
         'ParentID',
@@ -49,7 +47,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
         $owner = $this->getOwner();
         $myContent = '';
         $myContent .= $owner->updateSearchContentFromElementalsExtractData($owner);
-        if($owner && $owner->hasMethod('ElementalArea')) {
+        if ($owner -> hasMethod('ElementalArea')) {
             $myElementalArea = $owner->ElementalArea();
             $ids = [];
             if ($myElementalArea && $myElementalArea instanceof ElementalArea) {
@@ -62,8 +60,8 @@ class SiteTreeContentWriter extends SiteTreeExtension
             $this->owner->Content = $myContent . '. ';
 
             //for anchor links only!
-            foreach($ids as $id => $title) {
-                $this->owner->Content .= '<br /><a id="e'.$id.'">'.$title.'</a>';
+            foreach ($ids as $id => $title) {
+                $this->owner->Content .= '<br /><a id="e' . $id . '">' . $title . '</a>';
             }
         }
     }
@@ -124,34 +122,35 @@ class SiteTreeContentWriter extends SiteTreeExtension
         return $string;
     }
 
-    public function getUnsearchableFields() : array
+    public function getUnsearchableFields(): array
     {
         $owner = $this->getOwner();
         $array = self::BASE_UNSEARCHABLE_FIELDS;
-        if($owner->hasMethod('getUnsearchableFieldsExtras')) {
+        if ($owner->hasMethod('getUnsearchableFieldsExtras')) {
             $extraArray = $owner->getUnsearchableFieldsExtras();
         } else {
             $extraArray = Config::inst()->get(Page::class, 'unsearchable_fields_extra');
         }
-        if(! empty($extraArray) && is_array($extraArray)) {
+        if (! empty($extraArray) && is_array($extraArray)) {
             $array = array_merge($array, $extraArray);
         }
+
         return $array;
     }
 
-    public function getUnsearchableTypes() : array
+    public function getUnsearchableTypes(): array
     {
         $owner = $this->getOwner();
         $array = self::BASE_UNSEARCHABLE_TYPES;
-        if($owner->hasMethod('getUnsearchableTypesExtras')) {
+        if ($owner->hasMethod('getUnsearchableTypesExtras')) {
             $extraArray = $owner->getUnsearchableTypesExtras();
         } else {
             $extraArray = Config::inst()->get(Page::class, 'unsearchable_types_extra');
         }
-        if(! empty($extraArray) && is_array($extraArray)) {
+        if (! empty($extraArray) && is_array($extraArray)) {
             $array = array_merge($array, $extraArray);
         }
+
         return $array;
     }
-
 }
