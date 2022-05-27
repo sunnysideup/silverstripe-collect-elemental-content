@@ -106,7 +106,9 @@ class SiteTreeContentWriter extends SiteTreeExtension
                             $values = $object->{$name}();
                             if ($values && $values->exists() && $values->count() < 13) {
                                 foreach ($values as $item) {
-                                    $listValues[] = $item->getTitle();
+                                    if($item && $item->exists()) {
+                                        $listValues[] = $item->getTitle();
+                                    }
                                 }
                             }
                             $endValue = implode('; ', array_filter($listValues));
