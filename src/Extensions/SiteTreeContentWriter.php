@@ -3,12 +3,15 @@
 namespace Sunnysideup\CollectElementalContent\Extensions;
 
 use DNADesign\Elemental\Models\ElementalArea;
+use Page;
 use SilverStripe\CMS\Model\SiteTreeExtension;
 use SilverStripe\Core\Config\Config;
-use Page;
 
 class SiteTreeContentWriter extends SiteTreeExtension
 {
+    /**
+     * @var string[]
+     */
     private const BASE_UNSEARCHABLE_FIELDS = [
         'Content',
         'ParentID',
@@ -28,6 +31,9 @@ class SiteTreeContentWriter extends SiteTreeExtension
         'Version',
     ];
 
+    /**
+     * @var string[]
+     */
     private const BASE_UNSEARCHABLE_TYPES = [
         'Boolean',
         'Boolean(0)',
@@ -47,7 +53,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
         $owner = $this->getOwner();
         $myContent = '';
         $myContent .= $owner->updateSearchContentFromElementalsExtractData($owner);
-        if ($owner -> hasMethod('ElementalArea')) {
+        if ($owner->hasMethod('ElementalArea')) {
             $myElementalArea = $owner->ElementalArea();
             $ids = [];
             if ($myElementalArea && $myElementalArea instanceof ElementalArea) {
@@ -57,6 +63,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
                     $ids[$element->ID] = $element->Title;
                 }
             }
+
             $this->owner->Content = $myContent . '. ';
 
             //for anchor links only!
@@ -80,6 +87,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
                         if (0 === stripos($type, 'Enum')) {
                             continue;
                         }
+
                         $endValue = '';
                         switch ($relType) {
                             case 'db':
@@ -90,29 +98,28 @@ class SiteTreeContentWriter extends SiteTreeExtension
                             case 'belongs':
                             case 'has_one':
                                 $values = $object->{$name}();
-                                if ($values && $values->exists()) {
-                                    $endValue = $values->getTitle();
-                                } else {
-                                    $endValue = '';
-                                }
+                                $endValue = $values && $values->exists() ? $values->getTitle() : '';
                                 $isList = false;
 
                                 break;
                             default:
                                 $isList = true;
                         }
+
                         if ($isList) {
                             $listValues = [];
                             $values = $object->{$name}();
                             if ($values && $values->exists() && $values->count() < 13) {
                                 foreach ($values as $item) {
-                                    if($item && $item->exists()) {
+                                    if ($item && $item->exists()) {
                                         $listValues[] = $item->getTitle();
                                     }
                                 }
                             }
+
                             $endValue = implode('; ', array_filter($listValues));
                         }
+
                         $data = trim(strip_tags($endValue));
                         // $string .= $data ? $name . ': '.$data . '; ' : $name.' missing; ';
                         $string .= $data ? $data . '; ' : '';
@@ -133,6 +140,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
         } else {
             $extraArray = Config::inst()->get(Page::class, 'unsearchable_fields_extra');
         }
+
         if (! empty($extraArray) && is_array($extraArray)) {
             $array = array_merge($array, $extraArray);
         }
@@ -149,6 +157,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
         } else {
             $extraArray = Config::inst()->get(Page::class, 'unsearchable_types_extra');
         }
+
         if (! empty($extraArray) && is_array($extraArray)) {
             $array = array_merge($array, $extraArray);
         }
