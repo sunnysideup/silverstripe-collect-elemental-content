@@ -16,7 +16,7 @@
     "mysql"
   ],
   "require": {
-    "silverstripe/framework": "^4.0",
+    "silverstripe/framework": "^4.0 || ^5.0",
     "dnadesign/silverstripe-elemental": "^4"
   },
   "minimum-stability": "dev",
