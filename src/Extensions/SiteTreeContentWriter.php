@@ -120,7 +120,7 @@ class SiteTreeContentWriter extends SiteTreeExtension
                             $endValue = implode('; ', array_filter($listValues));
                         }
 
-                        $data = trim(strip_tags($endValue));
+                        $data = trim(strip_tags((string) $endValue));
                         // $string .= $data ? $name . ': '.$data . '; ' : $name.' missing; ';
                         $string .= $data ? $data . '; ' : '';
                     }
