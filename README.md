@@ -1,4 +1,4 @@
-# Silverstripe Avoid Child Deletion module
+# Silverstripe Collect Elemental Content
 [![Build Status](https://travis-ci.org/sunnysideup/silverstripe-collect-elemental-content.svg?branch=master)](https://travis-ci.org/sunnysideup/silverstripe-collect-elemental-content)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-collect-elemental-content/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-collect-elemental-content/?branch=master)
 [![codecov.io](https://codecov.io/github/sunnysideup/silverstripe-collect-elemental-content/coverage.svg?branch=master)](https://codecov.io/github/sunnysideup/silverstripe-collect-elemental-content?branch=master)
